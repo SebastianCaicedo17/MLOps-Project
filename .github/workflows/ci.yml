@@ -27,7 +27,9 @@ jobs:
       - name: Entraîner le modèle
         run: python train.py
 
-  # Exécuté UNIQUEMENT sur develop
+# ---------------------------------------------------
+  # JOB 2 : Exécuté UNIQUEMENT sur develop
+  # ---------------------------------------------------
   build-and-publish:
     needs: train
     if: github.ref == 'refs/heads/develop'
@@ -46,9 +48,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Mettre le nom du repo en minuscules
+        run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+
       - name: Construire et publier l'image Docker
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/wine-api:latest
+          tags: ghcr.io/${{ env.REPO_LC }}/wine-api:latest
