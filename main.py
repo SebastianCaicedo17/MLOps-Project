@@ -39,3 +39,5 @@ def predict(data: WineInput):
         return {"prediction": int(prediction[0])}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Erreur lors de la prédiction : {e}")
+    
+#Test piepeline CI
